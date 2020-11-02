@@ -19,12 +19,12 @@ public class UserDB {
         return id;
     }
 
-    public void setNumCli(String id) {
+    public void setId(String id) {
         this.id = id;
     }
 
     @Basic
-    @Column(name = "firstName", nullable = true, length = 50)
+    @Column(name = "firstname", nullable = true, length = 50)
     public String getFirstName() {
         return firstName;
     }
@@ -34,7 +34,7 @@ public class UserDB {
     }
 
     @Basic
-    @Column(name = "lastName", nullable = true, length = 50)
+    @Column(name = "lastname", nullable = true, length = 50)
     public String getLastName() {
         return lastName;
     }
@@ -44,7 +44,7 @@ public class UserDB {
     }
 
     @Basic
-    @Column(name = "birthDay", nullable = true, length = 10)
+    @Column(name = "birthday", nullable = true, length = 10)
     public String getBirthDay() {
         return birthDay;
     }
