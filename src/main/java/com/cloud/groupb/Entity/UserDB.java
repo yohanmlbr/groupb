@@ -1,7 +1,5 @@
 package com.cloud.groupb.Entity;
 
-import com.sun.javafx.geom.transform.Identity;
-
 import javax.persistence.*;
 import java.util.Objects;
 
@@ -12,8 +10,8 @@ public class UserDB {
     private String firstName;
     private String lastName;
     private String birthDay;
-    private long lat;
-    private long lon;
+    private double lat;
+    private double lon;
 
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
@@ -58,21 +56,21 @@ public class UserDB {
 
     @Basic
     @Column(name = "lat", nullable = true)
-    public long getLat() {
+    public double getLat() {
         return lat;
     }
 
-    public void setLat(long lat) {
+    public void setLat(double lat) {
         this.lat = lat;
     }
 
     @Basic
     @Column(name = "lon", nullable = true)
-    public long getLon() {
+    public double getLon() {
         return lon;
     }
 
-    public void setLon(long lon) {
+    public void setLon(double lon) {
         this.lon = lon;
     }
 
