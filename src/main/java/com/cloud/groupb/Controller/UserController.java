@@ -24,4 +24,16 @@ public class UserController {
         UserService us = new UserService(ur);
         return us.getUsers();
     }
+
+    @PutMapping("/")
+    public void putUsers(@RequestBody List<User> users){
+        UserService us = new UserService(ur);
+        us.putUsers(users);
+    }
+
+    @DeleteMapping("/")
+    public void deleteUsers(){
+        UserService us = new UserService(ur);
+        us.deleteUsers();
+    }
 }

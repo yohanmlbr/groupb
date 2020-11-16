@@ -1,12 +1,14 @@
 package com.cloud.groupb.Entity;
 
+import com.sun.javafx.geom.transform.Identity;
+
 import javax.persistence.*;
 import java.util.Objects;
 
 @Entity
 @Table(name = "user", schema = "cloud_group_b", catalog = "")
 public class UserDB {
-    private String id;
+    private int id;
     private String firstName;
     private String lastName;
     private String birthDay;
@@ -14,12 +16,13 @@ public class UserDB {
     private long lon;
 
     @Id
-    @Column(name = "id", nullable = false, length = 50)
-    public String getId() {
+    @GeneratedValue(strategy = GenerationType.AUTO)
+    @Column(name = "id", nullable = false, length = 11)
+    public int getId() {
         return id;
     }
 
-    public void setId(String id) {
+    public void setId(int id) {
         this.id = id;
     }
 

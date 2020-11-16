@@ -27,6 +27,19 @@ public class UserService {
         return list;
     }
 
+    public void putUsers(List<User> users){
+        userRepository.deleteAll();
+        List<UserDB> list=new ArrayList<>();
+        for(User u : users){
+            list.add(jsonToDb(u));
+        }
+        userRepository.saveAll(list);
+    }
+
+    public void deleteUsers(){
+        userRepository.deleteAll();
+    }
+
     private User dbToJson(UserDB userdb){
         User user = new User();
         Position position = new Position();
