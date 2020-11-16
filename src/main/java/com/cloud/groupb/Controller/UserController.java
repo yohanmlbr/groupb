@@ -36,4 +36,28 @@ public class UserController {
         UserService us = new UserService(ur);
         us.deleteUsers();
     }
+
+    @GetMapping("/{id}")
+    public User getUserById(@PathVariable int id){
+        UserService us = new UserService(ur);
+        return us.getUserById(id);
+    }
+
+    @PostMapping("/")
+    public User postUser(@RequestBody User user){
+        UserService us = new UserService(ur);
+        return us.postUser(user);
+    }
+
+    @PutMapping("/{id}")
+    public User putUserById(@PathVariable int id, @RequestBody User user){
+        UserService us = new UserService(ur);
+        return us.putUserById(id, user);
+    }
+
+    @DeleteMapping("/{id}")
+    public void deleteUserById(@PathVariable int id){
+        UserService us = new UserService(ur);
+        us.deleteUserById(id);
+    }
 }

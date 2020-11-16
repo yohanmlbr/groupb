@@ -14,7 +14,6 @@ public class UserDB {
     private double lon;
 
     @Id
-    @GeneratedValue(strategy = GenerationType.AUTO)
     @Column(name = "id", nullable = false, length = 11)
     public int getId() {
         return id;
