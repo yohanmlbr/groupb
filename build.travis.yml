@@ -1,0 +1,15 @@
+dist: xenial
+language: java
+jdk:
+  - openjdk8
+
+addons:
+  sonarcloud:
+    organization: "yohanmlbr" # the key of the org you chose at step #3
+    token:
+      secure: "s0+c6xnvAHxu+otk4Two8xepP4BwoAOjZWMEYxYlsz0ait0C5ElvH9MLikxG9ofK3/0qixcecShiu/XH5lKydEbYaCmYt0Mx0iPNBMWH+/MNC0jIhC/o0ngaVzRdfsglemBHzPluFQMWjkj/cygJZQ2CyJkpk2GcR0qM3VSYlbUzuqvzL+xceLZIllm39o+7cnhj2IcheJuypFvuT3dyGe6dT7I2GFlF9RdlpXeUjQlWctgl0OY7MEvlM60V/9vORsL84/HQS/yamL5zViHj0EXKji3NsF4I+80Zb5OdlsbphafKHJCZyOekmc8woli+yoTxJVMCm5yY1kIlxIg+gIM1B6Fn8nNJCBXn+nUC0NjLFsVCwboOJNMUjv5WED+goBsnzgyRSFAEF89qSam4BTMbMYr0nZt9+BWopvcfwGBCmb1CjoCk8raZ044hke+2WNOcCRqEzB8RNC1zSmNAX4SQ87VOWYUFfrsgt4qTvtvXjZFhITEqRP0vZbcqt50FsBhyXtwtElR3aut2XDZ/WNRQ4jZFi2Nmf2nrV/ajn19I9YWofNtSeG2DTCSZg53UZ8mzkqIMIdoTtnxsgRpws1pr8dcwTw3gYkPlXt4cknOB4FY2oHQFoKgD4au1KEF+J/WGd9WJqeECyvMVmJXz4uf+VMRhifX0IU/PwjxtL7k=" # encrypted value of your token
+script:
+  # other script steps might be done before running the actual analysis
+  - mvn install -DskipTests=true -Dmaven.javadoc.skip=true -B -V
+  - mvn test -B
+  - mvn clean org.jacoco:jacoco-maven-plugin:prepare-agent install sonar:sonar -Dsonar.projectKey=yohanmlbr_groupb
