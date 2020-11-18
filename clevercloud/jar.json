@@ -1,7 +1,7 @@
 {
 	"build": {
 		"type": "maven",
-		"goal": "verify"
+		"goal": "install -DskipTests"
 	},
 	"deploy": {
 		"jarName": "target/groupb-*.jar"
