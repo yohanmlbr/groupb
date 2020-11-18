@@ -1,0 +1,9 @@
+{
+	"build": {
+		"type": "maven",
+		"goal": "package"
+	},
+	"deploy": {
+		"jarname": "target/groupb.jar"
+	}
+}
