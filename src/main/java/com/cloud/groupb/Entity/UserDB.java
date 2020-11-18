@@ -1,6 +1,7 @@
 package com.cloud.groupb.Entity;
 
 import javax.persistence.*;
+import java.util.Date;
 import java.util.Objects;
 
 @Entity
@@ -9,11 +10,12 @@ public class UserDB {
     private int id;
     private String firstName;
     private String lastName;
-    private String birthDay;
+    private Date birthDay;
     private double lat;
     private double lon;
 
     @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "id", nullable = false, length = 11)
     public int getId() {
         return id;
@@ -44,12 +46,12 @@ public class UserDB {
     }
 
     @Basic
-    @Column(name = "birthday", nullable = true, length = 10)
-    public String getBirthDay() {
+    @Column(name = "birthday", nullable = true)
+    public Date getBirthDay() {
         return birthDay;
     }
 
-    public void setBirthDay(String birthDay) {
+    public void setBirthDay(Date birthDay) {
         this.birthDay = birthDay;
     }
 

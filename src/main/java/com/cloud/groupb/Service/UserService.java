@@ -5,27 +5,30 @@ import com.cloud.groupb.Entity.User;
 import com.cloud.groupb.Entity.UserDB;
 import com.cloud.groupb.Exception.ExceptionRessource;
 import com.cloud.groupb.Repository.UserRepository;
-import org.springframework.data.domain.Page;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
+import org.springframework.stereotype.Service;
 
-import java.time.LocalDate;
-import java.time.Period;
-import java.time.format.DateTimeFormatter;
+import java.text.DateFormat;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Calendar;
+import java.util.Date;
 import java.util.List;
 
+@Service
 public class UserService {
-    private UserRepository userRepository;
 
-    public UserService(UserRepository userRepository) {
-        this.userRepository = userRepository;
+    @Autowired
+    UserRepository userRepository;
+
+    public UserService(UserRepository repository) {
+        this.userRepository = repository;
     }
 
-    private List<UserDB> getUsersDB() {
-        return userRepository.findAll();
-    }
-
-    private List<UserDB> getUsersDBByPage(int page){ return userRepository.findAll(PageRequest.of(page, 100)).toList();}
+    private List<UserDB> getUsersDB(int page){ return userRepository.findAll(PageRequest.of(page, 100)).toList();}
 
     public List<User> getTest(){
         List<User> list = new ArrayList<>();
@@ -39,15 +42,16 @@ public class UserService {
 
     public List<User> getUsers(int page) {
         List<User> list = new ArrayList<>();
-        for (UserDB u : getUsersDBByPage(page)) {
+        for (UserDB u : getUsersDB(page)) {
             list.add(dbToJson(u));
         }
         return list;
     }
 
+    /*
     public List<User> getUsersByAge(int page,int gt, int eq) {
         List<User> list = new ArrayList<>();
-        for (UserDB u : getUsersDBByPage(page)) {
+        for (UserDB u : getUsersDB(page)) {
             int age=getAge(u);
             if(eq!=-1 && gt!=-1){
                 if(age==eq && age>gt){
@@ -63,6 +67,34 @@ public class UserService {
                 if(age>gt){
                     list.add(dbToJson(u));
                 }
+            }
+        }
+        return list;
+    }
+    */
+
+    public List<User> getUsersByAge(int page,int gt, int eq) {
+        List<User> list = new ArrayList<>();
+        Pageable pageable=PageRequest.of(page, 100);
+        if(eq!=-1){
+            Date[] dates=dateEq(eq);
+            for(UserDB u : userRepository.findByAgeEq(dates[0],dates[1],pageable)){
+                list.add(dbToJson(u));
+            }
+        }
+        else if(gt!=-1){
+            for(UserDB u : userRepository.findByAgeGt(dateGt(gt),pageable)){
+                list.add(dbToJson(u));
+            }
+        }
+        return list;
+    }
+
+    public List<User> getUsersByTerm(int page,String term) {
+        List<User> list = new ArrayList<>();
+        for (UserDB u : getUsersDB(page)) {
+            if(u.getFirstName().toLowerCase().contains(term.toLowerCase())||u.getLastName().toLowerCase().contains(term.toLowerCase())){
+                list.add(dbToJson(u));
             }
         }
         return list;
@@ -109,7 +141,10 @@ public class UserService {
         user.setId(userdb.getId());
         user.setFirstName(userdb.getFirstName());
         user.setLastName(userdb.getLastName());
-        user.setBirthDay(userdb.getBirthDay());
+
+        DateFormat df = new SimpleDateFormat("MM/dd/yyyy");
+        user.setBirthDay(df.format(userdb.getBirthDay()));
+
         position.setLat(userdb.getLat());
         position.setLon(userdb.getLon());
         user.setPosition(position);
@@ -121,7 +156,11 @@ public class UserService {
         userdb.setId(user.getId());
         userdb.setFirstName(user.getFirstName());
         userdb.setLastName(user.getLastName());
-        userdb.setBirthDay(user.getBirthDay());
+        try {
+            userdb.setBirthDay(new SimpleDateFormat("MM/dd/yyyy").parse(user.getBirthDay()));
+        } catch (ParseException e) {
+            e.printStackTrace();
+        }
         if(user.getPosition()!=null){
             userdb.setLat(user.getPosition().getLat());
             userdb.setLon(user.getPosition().getLon());
@@ -129,6 +168,7 @@ public class UserService {
         return userdb;
     }
 
+    /*
     private UserDB Cast(Object[] obj)
     {
         UserDB u = new UserDB();
@@ -148,6 +188,26 @@ public class UserService {
         int age=Period.between(birthday,today).getYears();
         System.out.println(u.getFirstName()+" "+u.getLastName()+" : "+age+" ans");
         return age;
+    }
+    */
+
+    public Date dateGt(int n){
+        Calendar c = Calendar.getInstance();
+        c.setTime(new Date(System.currentTimeMillis()));
+        c.add(Calendar.YEAR, -n);
+        return c.getTime();
+    }
+
+    public Date[] dateEq(int n){
+        Date [] dates = new Date[2];
+        Calendar c = Calendar.getInstance();
+        c.setTime(new Date(System.currentTimeMillis()));
+        c.add(Calendar.YEAR, -n);
+        dates[0]=c.getTime();
+        c.add(Calendar.YEAR, -1);
+        c.add(Calendar.DAY_OF_YEAR,1);
+        dates[1]=c.getTime();
+        return dates;
     }
 
     private UserDB applyModification(UserDB udb, UserDB u) {
