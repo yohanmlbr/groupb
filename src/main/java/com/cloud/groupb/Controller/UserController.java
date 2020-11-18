@@ -19,10 +19,22 @@ public class UserController {
         this.ur = userRepository;
     }
 
-    @GetMapping
-    public List<User> getUsers(){
+    @GetMapping("/test")
+    public List<User> getTest(){
         UserService us = new UserService(ur);
-        return us.getUsers();
+        return us.getTest();
+    }
+
+    @GetMapping
+    public List<User> getUsers(@RequestParam(defaultValue = "0") int page){
+        UserService us = new UserService(ur);
+        return us.getUsers(page);
+    }
+
+    @GetMapping("/age")
+    public List<User> getUsersByAge(@RequestParam(defaultValue = "0") int page,@RequestParam(defaultValue = "-1") int gt,@RequestParam(defaultValue = "-1") int eq){
+        UserService us = new UserService(ur);
+        return us.getUsersByAge(page,gt,eq);
     }
 
     @PutMapping

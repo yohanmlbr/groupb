@@ -73,7 +73,6 @@ public class UserDB {
         this.lon = lon;
     }
 
-
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;
