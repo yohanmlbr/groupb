@@ -19,19 +19,19 @@ public class UserController {
         this.ur = userRepository;
     }
 
-    @GetMapping("/")
+    @GetMapping
     public List<User> getUsers(){
         UserService us = new UserService(ur);
         return us.getUsers();
     }
 
-    @PutMapping("/")
+    @PutMapping
     public void putUsers(@RequestBody List<User> users){
         UserService us = new UserService(ur);
         us.putUsers(users);
     }
 
-    @DeleteMapping("/")
+    @DeleteMapping
     public void deleteUsers(){
         UserService us = new UserService(ur);
         us.deleteUsers();
@@ -43,7 +43,7 @@ public class UserController {
         return us.getUserById(id);
     }
 
-    @PostMapping("/")
+    @PostMapping
     public User postUser(@RequestBody User user){
         UserService us = new UserService(ur);
         return us.postUser(user);
