@@ -38,6 +38,11 @@ public class UserController {
         return us.getUsersByTerm(page,term);
     }
 
+    @GetMapping("/nearest")
+    public List<User> getUsersByLatLon(@RequestParam(defaultValue = "0") int page,@RequestParam(defaultValue = "") double lat, @RequestParam(defaultValue = "") double lon){
+        return us.getUsersByLatLon(page,lat,lon);
+    }
+
     @PutMapping
     public void putUsers(@RequestBody List<User> users){
         us.putUsers(users);

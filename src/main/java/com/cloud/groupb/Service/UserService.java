@@ -78,12 +78,15 @@ public class UserService {
         Pageable pageable=PageRequest.of(page, 100);
         if(eq!=-1){
             Date[] dates=dateEq(eq);
-            for(UserDB u : userRepository.findByAgeEq(dates[0],dates[1],pageable)){
+            List<UserDB> users = userRepository.findByBirthDayBetween(dates[1],dates[0],pageable);
+            for(UserDB u : users){
                 list.add(dbToJson(u));
             }
         }
         else if(gt!=-1){
-            for(UserDB u : userRepository.findByAgeGt(dateGt(gt),pageable)){
+            Date date=dateGt(gt);
+            List<UserDB> users = userRepository.findByBirthDayBefore(date,pageable);
+            for(UserDB u : users){
                 list.add(dbToJson(u));
             }
         }
@@ -92,13 +95,24 @@ public class UserService {
 
     public List<User> getUsersByTerm(int page,String term) {
         List<User> list = new ArrayList<>();
-        for (UserDB u : getUsersDB(page)) {
-            if(u.getFirstName().toLowerCase().contains(term.toLowerCase())||u.getLastName().toLowerCase().contains(term.toLowerCase())){
-                list.add(dbToJson(u));
-            }
+        Pageable pageable=PageRequest.of(page, 100);
+        List<UserDB> users = userRepository.findByLastNameContainsOrFirstNameContains(term,term,pageable);
+        for(UserDB u : users){
+            list.add(dbToJson(u));
         }
         return list;
     }
+
+    public List<User> getUsersByLatLon(int page, double lat, double lon) {
+        List<User> list = new ArrayList<>();
+        Pageable pageable=PageRequest.of(page, 100);
+        List<UserDB> users = userRepository.findByLatNearAndLonNear(lat,lon,pageable);
+        for(UserDB u : users){
+            list.add(dbToJson(u));
+        }
+        return list;
+    }
+
 
     public void putUsers(List<User> users) {
         userRepository.deleteAll();
