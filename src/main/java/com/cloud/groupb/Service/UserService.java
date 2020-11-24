@@ -28,50 +28,14 @@ public class UserService {
         this.userRepository = repository;
     }
 
-    private List<UserDB> getUsersDB(int page){ return userRepository.findAll(PageRequest.of(page, 100)).toList();}
-
-    public List<User> getTest(){
-        List<User> list = new ArrayList<>();
-        /*
-        for (Object[] obj : userRepository.getUsersDBByPage()) {
-            list.add(dbToJson(Cast(obj)));
-        }
-        */
-        return list;
-    }
-
     public List<User> getUsers(int page) {
         List<User> list = new ArrayList<>();
-        for (UserDB u : getUsersDB(page)) {
+        List<UserDB> users = userRepository.findAll(PageRequest.of(page, 100)).toList();
+        for (UserDB u : users) {
             list.add(dbToJson(u));
         }
         return list;
     }
-
-    /*
-    public List<User> getUsersByAge(int page,int gt, int eq) {
-        List<User> list = new ArrayList<>();
-        for (UserDB u : getUsersDB(page)) {
-            int age=getAge(u);
-            if(eq!=-1 && gt!=-1){
-                if(age==eq && age>gt){
-                    list.add(dbToJson(u));
-                }
-            }
-            else if(eq!=-1){
-                if(age==eq){
-                    list.add(dbToJson(u));
-                }
-            }
-            else if(gt!=-1){
-                if(age>gt){
-                    list.add(dbToJson(u));
-                }
-            }
-        }
-        return list;
-    }
-    */
 
     public List<User> getUsersByAge(int page,int gt, int eq) {
         List<User> list = new ArrayList<>();
@@ -93,7 +57,7 @@ public class UserService {
         return list;
     }
 
-    public List<User> getUsersByTerm(int page,String term) {
+    public List<User> getUsersBySearch(int page,String term) {
         List<User> list = new ArrayList<>();
         Pageable pageable=PageRequest.of(page, 100);
         List<UserDB> users = userRepository.findByLastNameContainsOrFirstNameContains(term,term,pageable);
@@ -103,10 +67,11 @@ public class UserService {
         return list;
     }
 
-    public List<User> getUsersByLatLon(int page, double lat, double lon) {
+    public List<User> getUsersByNearest(int page, double lat, double lon) {
         List<User> list = new ArrayList<>();
-        Pageable pageable=PageRequest.of(page, 100);
-        List<UserDB> users = userRepository.findByLatNearAndLonNear(lat,lon,pageable);
+        Pageable pageable=PageRequest.of(page, 10);
+        //List<UserDB> users = userRepository.findByPositionIsNear(new Point((int)lat,(int)lon),pageable);
+        List<UserDB> users = userRepository.findByLatLon(lat,lon,pageable);
         for(UserDB u : users){
             list.add(dbToJson(u));
         }
@@ -182,37 +147,14 @@ public class UserService {
         return userdb;
     }
 
-    /*
-    private UserDB Cast(Object[] obj)
-    {
-        UserDB u = new UserDB();
-        u.setId(((UserDB)obj[0]).getId());
-        u.setFirstName(((UserDB)obj[0]).getFirstName());
-        u.setLastName(((UserDB)obj[0]).getLastName());
-        u.setBirthDay(((UserDB)obj[0]).getBirthDay());
-        u.setLat(((UserDB)obj[0]).getLat());
-        u.setLon(((UserDB)obj[0]).getLon());
-        return u;
-    }
-
-    public int getAge(UserDB u){
-        LocalDate today = LocalDate.now();
-        DateTimeFormatter dtf = DateTimeFormatter.ofPattern("MM/dd/yyyy");
-        LocalDate birthday = LocalDate.parse(u.getBirthDay(), dtf);
-        int age=Period.between(birthday,today).getYears();
-        System.out.println(u.getFirstName()+" "+u.getLastName()+" : "+age+" ans");
-        return age;
-    }
-    */
-
-    public Date dateGt(int n){
+    private Date dateGt(int n){
         Calendar c = Calendar.getInstance();
         c.setTime(new Date(System.currentTimeMillis()));
         c.add(Calendar.YEAR, -n);
         return c.getTime();
     }
 
-    public Date[] dateEq(int n){
+    private Date[] dateEq(int n){
         Date [] dates = new Date[2];
         Calendar c = Calendar.getInstance();
         c.setTime(new Date(System.currentTimeMillis()));

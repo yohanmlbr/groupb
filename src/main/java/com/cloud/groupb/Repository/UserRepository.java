@@ -12,17 +12,12 @@ import java.util.List;
 @Repository
 public interface UserRepository extends JpaRepository<UserDB, Integer> {
 
-    @Query("SELECT u FROM UserDB u WHERE u.birthDay<?1")
-    List<UserDB> findByAgeGt(Date date, Pageable page);
-
-    @Query("SELECT u FROM UserDB u WHERE u.birthDay<=?1 AND u.birthDay>=?2")
-    List<UserDB> findByAgeEq(Date date1, Date date2, Pageable page);
-
     List<UserDB> findByLastNameContainsOrFirstNameContains(String lastname,String firstanme, Pageable page);
 
     List<UserDB> findByBirthDayBetween(Date date1, Date date2, Pageable page);
 
     List<UserDB> findByBirthDayBefore(Date date, Pageable page);
 
-    List<UserDB> findByLat(double lat, double lon, Pageable page);
+    @Query(value ="SELECT *, ( acos(sin(RADIANS(lat))*sin(RADIANS(?1))+cos(RADIANS(lat))*cos(RADIANS(?1))*cos(RADIANS(lon-?2)))*6371 ) AS distance FROM User ORDER BY distance",nativeQuery = true)
+    List<UserDB> findByLatLon(double lat, double lon, Pageable page);
 }

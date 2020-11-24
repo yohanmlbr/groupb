@@ -18,11 +18,6 @@ public class UserController {
         this.us = userService;
     }
 
-    @GetMapping("/test")
-    public List<User> getTest(){
-        return us.getTest();
-    }
-
     @GetMapping
     public List<User> getUsers(@RequestParam(defaultValue = "0") int page){
         return us.getUsers(page);
@@ -35,12 +30,12 @@ public class UserController {
 
     @GetMapping("/search")
     public List<User> getUsersByTerm(@RequestParam(defaultValue = "0") int page,@RequestParam(defaultValue = "") String term){
-        return us.getUsersByTerm(page,term);
+        return us.getUsersBySearch(page,term);
     }
 
     @GetMapping("/nearest")
     public List<User> getUsersByLatLon(@RequestParam(defaultValue = "0") int page,@RequestParam(defaultValue = "") double lat, @RequestParam(defaultValue = "") double lon){
-        return us.getUsersByLatLon(page,lat,lon);
+        return us.getUsersByNearest(page,lat,lon);
     }
 
     @PutMapping
