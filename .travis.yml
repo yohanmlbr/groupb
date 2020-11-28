@@ -1,8 +1,13 @@
 dist: xenial
 language: java
 jdk:
+  - openjdk11
   - openjdk8
 
+before_install:
+  - sudo apt update
+  - sudo apt install snapd
+  - sudo snap install zaproxy --classic
 addons:
   sonarcloud:
     organization: "yohanmlbr" # the key of the org you chose at step #3
