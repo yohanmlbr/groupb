@@ -1,6 +1,7 @@
 package com.cloud.groupb.Controller;
 
 import com.cloud.groupb.Entity.User;
+import com.cloud.groupb.Exception.InvalidEntryException;
 import com.cloud.groupb.Exception.NotFoundException;
 import com.cloud.groupb.Exception.RessourceException;
 import com.cloud.groupb.Service.UserService;
@@ -28,7 +29,7 @@ public class UserController {
     }
 
     @GetMapping("/age")
-    public List<User> getUsersByAge(@RequestParam(defaultValue = "0") int page,@RequestParam(defaultValue = "-1") int gt,@RequestParam(defaultValue = "-1") int eq){
+    public List<User> getUsersByAge(@RequestParam(defaultValue = "0") int page,@RequestParam(defaultValue = "-1") int gt,@RequestParam(defaultValue = "-1") int eq) throws InvalidEntryException{
         return us.getUsersByAge(page,gt,eq);
     }
 
@@ -77,5 +78,12 @@ public class UserController {
     @ResponseStatus(HttpStatus.NOT_FOUND)
     private ResponseEntity notFoundException(RessourceException re) {
         return new ResponseEntity(HttpStatus.NOT_FOUND);
+    }
+
+    @ExceptionHandler(InvalidEntryException.class)
+    @ResponseBody
+    @ResponseStatus(HttpStatus.NOT_FOUND)
+    private ResponseEntity invalidEntryException(InvalidEntryException iee) {
+        return new ResponseEntity(HttpStatus.BAD_REQUEST);
     }
 }

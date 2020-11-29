@@ -3,6 +3,7 @@ package com.cloud.groupb.Service;
 import com.cloud.groupb.Entity.Position;
 import com.cloud.groupb.Entity.User;
 import com.cloud.groupb.Entity.UserDB;
+import com.cloud.groupb.Exception.InvalidEntryException;
 import com.cloud.groupb.Exception.RessourceException;
 import com.cloud.groupb.Repository.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -38,6 +39,9 @@ public class UserService {
     }
 
     public List<User> getUsersByAge(int page,int gt, int eq) {
+        if(gt<-1 || eq <-1){
+            throw new InvalidEntryException("âge négatif");
+        }
         List<User> list = new ArrayList<>();
         Pageable pageable=PageRequest.of(page, 100);
         if(eq!=-1){
