@@ -4,12 +4,12 @@ import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.ResponseStatus;
 
 @ResponseStatus(value = HttpStatus.NOT_FOUND)
-public class ExceptionRessource extends RuntimeException {
+public class RessourceException extends RuntimeException {
     private String resourceName;
     private String fieldName;
     private Object fieldValue;
 
-    public ExceptionRessource(String resourceName, String fieldName, Object fieldValue) {
+    public RessourceException(String resourceName, String fieldName, Object fieldValue) {
         super(String.format("Impossible d'obtenir la ressource %s qui a pour %s la valeur '%s'", resourceName, fieldName, fieldValue));
         this.resourceName = resourceName;
         this.fieldName = fieldName;

@@ -12,6 +12,8 @@ import java.util.List;
 @Repository
 public interface UserRepository extends JpaRepository<UserDB, Integer> {
 
+    //UserDB findById(int id);
+
     List<UserDB> findByLastNameContainsOrFirstNameContains(String lastname,String firstanme, Pageable page);
 
     List<UserDB> findByBirthDayBetween(Date date1, Date date2, Pageable page);

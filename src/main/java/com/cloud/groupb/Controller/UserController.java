@@ -1,8 +1,12 @@
 package com.cloud.groupb.Controller;
 
 import com.cloud.groupb.Entity.User;
+import com.cloud.groupb.Exception.NotFoundException;
+import com.cloud.groupb.Exception.RessourceException;
 import com.cloud.groupb.Service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -39,8 +43,8 @@ public class UserController {
     }
 
     @PutMapping
-    public void putUsers(@RequestBody List<User> users){
-        us.putUsers(users);
+    public ResponseEntity<List<User>> putUsers(@RequestBody List<User> users){
+        return new ResponseEntity<>(us.putUsers(users), HttpStatus.CREATED);
     }
 
     @DeleteMapping
@@ -49,22 +53,29 @@ public class UserController {
     }
 
     @GetMapping("/{id}")
-    public User getUserById(@PathVariable int id){
+    public User getUserById(@PathVariable int id) throws RessourceException {
         return us.getUserById(id);
     }
 
     @PostMapping
-    public User postUser(@RequestBody User user){
-        return us.postUser(user);
+    public ResponseEntity<User> postUser(@RequestBody User user){
+        return new ResponseEntity<>(us.postUser(user), HttpStatus.CREATED);
     }
 
     @PutMapping("/{id}")
-    public User putUserById(@PathVariable int id, @RequestBody User user){
+    public User putUserById(@PathVariable int id, @RequestBody User user) throws RessourceException {
         return us.putUserById(id, user);
     }
 
     @DeleteMapping("/{id}")
-    public void deleteUserById(@PathVariable int id){
+    public void deleteUserById(@PathVariable int id) throws RessourceException {
         us.deleteUserById(id);
+    }
+
+    @ExceptionHandler(RessourceException.class)
+    @ResponseBody
+    @ResponseStatus(HttpStatus.NOT_FOUND)
+    private ResponseEntity notFoundException(RessourceException re) {
+        return new ResponseEntity(HttpStatus.NOT_FOUND);
     }
 }

@@ -3,7 +3,7 @@ package com.cloud.groupb.Service;
 import com.cloud.groupb.Entity.Position;
 import com.cloud.groupb.Entity.User;
 import com.cloud.groupb.Entity.UserDB;
-import com.cloud.groupb.Exception.ExceptionRessource;
+import com.cloud.groupb.Exception.RessourceException;
 import com.cloud.groupb.Repository.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.PageRequest;
@@ -79,13 +79,18 @@ public class UserService {
     }
 
 
-    public void putUsers(List<User> users) {
+    public List<User> putUsers(List<User> users) {
         userRepository.deleteAll();
         List<UserDB> list = new ArrayList<>();
         for (User u : users) {
             list.add(jsonToDb(u));
         }
         userRepository.saveAll(list);
+        List<User> listR = new ArrayList<>();
+        for (UserDB udb : list){
+            listR.add(dbToJson(udb));
+        }
+        return listR;
     }
 
     public void deleteUsers() {
@@ -94,7 +99,7 @@ public class UserService {
 
     public User getUserById(int id) {
         return dbToJson(userRepository.findById(id).orElseThrow(
-                () -> new ExceptionRessource("User", "id", id)
+                () -> new RessourceException("User", "id", id)
         ));
     }
 
@@ -104,7 +109,7 @@ public class UserService {
 
     public User putUserById(int id, User user) {
         UserDB udb = userRepository.findById(id).orElseThrow(
-                () -> new ExceptionRessource("User", "id", id)
+                () -> new RessourceException("User", "id", id)
         );
         UserDB u = jsonToDb(user);
         return dbToJson(userRepository.save(applyModification(udb,u)));
@@ -114,10 +119,14 @@ public class UserService {
         userRepository.deleteById(id);
     }
 
+    private boolean userExists(int id) {
+        return userRepository.findById(id) != null;
+    }
+
     private User dbToJson(UserDB userdb) {
         User user = new User();
         Position position = new Position();
-        user.setId(userdb.getId());
+        user.setId(String.valueOf(userdb.getId()));
         user.setFirstName(userdb.getFirstName());
         user.setLastName(userdb.getLastName());
 
@@ -132,7 +141,9 @@ public class UserService {
 
     private UserDB jsonToDb(User user) {
         UserDB userdb = new UserDB();
-        userdb.setId(user.getId());
+        if(user.getId()!=null){
+            userdb.setId(Integer.parseInt(user.getId()));
+        }
         userdb.setFirstName(user.getFirstName());
         userdb.setLastName(user.getLastName());
         try {
