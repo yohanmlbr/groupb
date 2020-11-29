@@ -5,6 +5,9 @@ import java.awt.Point;
 import java.util.Date;
 import java.util.Objects;
 
+/**
+ * Objet entity utilisateur
+ */
 @Entity
 @Table(name = "user", schema = "cloud_group_b", catalog = "")
 public class UserDB {

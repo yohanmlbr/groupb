@@ -19,6 +19,9 @@ import java.util.Calendar;
 import java.util.Date;
 import java.util.List;
 
+/**
+ * Services utilisateurs
+ */
 @Service
 public class UserService {
 
@@ -29,6 +32,11 @@ public class UserService {
         this.userRepository = repository;
     }
 
+    /**
+     * Retourne tous les utilisateurs par page de 100
+     * @param page
+     * @return
+     */
     public List<User> getUsers(int page) {
         List<User> list = new ArrayList<>();
         List<UserDB> users = userRepository.findAll(PageRequest.of(page, 100)).toList();
@@ -38,6 +46,14 @@ public class UserService {
         return list;
     }
 
+    /**
+     * Si eq est spécifié, retournes les utilsateurs de cet âge, sinon, si gt est spécifié,
+     * retourne les utilisateurs plus agé, les utilisateurs sont renvoyés par page de 100
+     * @param page
+     * @param gt
+     * @param eq
+     * @return
+     */
     public List<User> getUsersByAge(int page,int gt, int eq) {
         if(gt<-1 || eq <-1){
             throw new InvalidEntryException("âge négatif");
@@ -61,6 +77,12 @@ public class UserService {
         return list;
     }
 
+    /**
+     * Recherche des utilisateurs par nom et prénom par page de 100
+     * @param page
+     * @param term
+     * @return
+     */
     public List<User> getUsersBySearch(int page,String term) {
         List<User> list = new ArrayList<>();
         Pageable pageable=PageRequest.of(page, 100);
@@ -71,6 +93,13 @@ public class UserService {
         return list;
     }
 
+    /**
+     * Retourne les utilisateurs les plus proches de la position spécifiée par page de 10
+     * @param page
+     * @param lat
+     * @param lon
+     * @return
+     */
     public List<User> getUsersByNearest(int page, double lat, double lon) {
         List<User> list = new ArrayList<>();
         Pageable pageable=PageRequest.of(page, 10);
@@ -82,7 +111,11 @@ public class UserService {
         return list;
     }
 
-
+    /**
+     * Remplace la liste des utilisateurs par celle passée en paramètre
+     * @param users
+     * @return
+     */
     public List<User> putUsers(List<User> users) {
         userRepository.deleteAll();
         List<UserDB> list = new ArrayList<>();
@@ -97,20 +130,39 @@ public class UserService {
         return listR;
     }
 
+    /**
+     * Supprime les utilisateurs
+     */
     public void deleteUsers() {
         userRepository.deleteAll();
     }
 
+    /**
+     * Retourne l'utilisateur dont l'id est spécifié
+     * @param id
+     * @return
+     */
     public User getUserById(int id) {
         return dbToJson(userRepository.findById(id).orElseThrow(
                 () -> new RessourceException("User", "id", id)
         ));
     }
 
+    /**
+     * Ajoute un utilisateur
+     * @param user
+     * @return
+     */
     public User postUser(User user) {
         return dbToJson(userRepository.save(jsonToDb(user)));
     }
 
+    /**
+     * Met à jour l'utilisateur dont l'id est spécifié
+     * @param id
+     * @param user
+     * @return
+     */
     public User putUserById(int id, User user) {
         UserDB udb = userRepository.findById(id).orElseThrow(
                 () -> new RessourceException("User", "id", id)
@@ -119,14 +171,28 @@ public class UserService {
         return dbToJson(userRepository.save(applyModification(udb,u)));
     }
 
+    /**
+     * Supprime l'utilisateur dont l'id est spécifié
+     * @param id
+     */
     public void deleteUserById(int id) {
         userRepository.deleteById(id);
     }
 
+    /**
+     * Retourne vrai si l'utilisateur dont l'id est spécifié existe
+     * @param id
+     * @return
+     */
     private boolean userExists(int id) {
         return userRepository.findById(id) != null;
     }
 
+    /**
+     * Converti un utilisateur format base de données en format JSON
+     * @param userdb
+     * @return
+     */
     private User dbToJson(UserDB userdb) {
         User user = new User();
         Position position = new Position();
@@ -143,6 +209,11 @@ public class UserService {
         return user;
     }
 
+    /**
+     * Converti un utilisateur format JSON en format base de données
+     * @param user
+     * @return
+     */
     private UserDB jsonToDb(User user) {
         UserDB userdb = new UserDB();
         if(user.getId()!=null){
@@ -162,6 +233,11 @@ public class UserService {
         return userdb;
     }
 
+    /**
+     * Retourne la date actuel moins n années
+     * @param n
+     * @return
+     */
     private Date dateGt(int n){
         Calendar c = Calendar.getInstance();
         c.setTime(new Date(System.currentTimeMillis()));
@@ -169,6 +245,11 @@ public class UserService {
         return c.getTime();
     }
 
+    /**
+     * Retournes les deux dates entre lesquelles l'utilisateur doit être né pour avoir l'âge n
+     * @param n
+     * @return
+     */
     private Date[] dateEq(int n){
         Date [] dates = new Date[2];
         Calendar c = Calendar.getInstance();
@@ -181,6 +262,12 @@ public class UserService {
         return dates;
     }
 
+    /**
+     * Copie l'utilisateur u dans udb
+     * @param udb
+     * @param u
+     * @return
+     */
     private UserDB applyModification(UserDB udb, UserDB u) {
         if (u.getFirstName() != null) udb.setFirstName(u.getFirstName());
         if (u.getLastName() != null) udb.setLastName(u.getLastName());
