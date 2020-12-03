@@ -18,6 +18,6 @@ public interface UserRepository extends JpaRepository<UserDB, Integer> {
 
     List<UserDB> findByBirthDayBefore(Date date, Pageable page);
 
-    @Query(value ="SELECT *, ( acos(sin(RADIANS(lat))*sin(RADIANS(?1))+cos(RADIANS(lat))*cos(RADIANS(?1))*cos(RADIANS(lon-?2)))*6371 ) AS distance FROM User ORDER BY distance",nativeQuery = true)
+    @Query(value ="SELECT *, ( acos(sin(RADIANS(lat))*sin(RADIANS(?1))+cos(RADIANS(lat))*cos(RADIANS(?1))*cos(RADIANS(lon-?2)))*6371 ) AS distance FROM user ORDER BY distance",nativeQuery = true)
     List<UserDB> findByLatLon(double lat, double lon, Pageable page);
 }
