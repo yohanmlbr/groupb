@@ -103,7 +103,6 @@ public class UserService {
     public List<User> getUsersByNearest(int page, double lat, double lon) {
         List<User> list = new ArrayList<>();
         Pageable pageable=PageRequest.of(page, 10);
-        //List<UserDB> users = userRepository.findByPositionIsNear(new Point((int)lat,(int)lon),pageable);
         List<UserDB> users = userRepository.findByLatLon(lat,lon,pageable);
         for(UserDB u : users){
             list.add(dbToJson(u));
@@ -191,14 +190,6 @@ public class UserService {
         userRepository.deleteById(idd);
     }
 
-    /**
-     * Retourne vrai si l'utilisateur dont l'id spécifié existe
-     * @param id
-     * @return
-     */
-    private boolean userExists(int id) {
-        return userRepository.findById(id) != null;
-    }
 
     /**
      * Converti un utilisateur format base de données en format JSON

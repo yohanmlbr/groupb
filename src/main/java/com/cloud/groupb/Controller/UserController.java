@@ -2,7 +2,6 @@ package com.cloud.groupb.Controller;
 
 import com.cloud.groupb.Entity.User;
 import com.cloud.groupb.Exception.InvalidEntryException;
-import com.cloud.groupb.Exception.NotFoundException;
 import com.cloud.groupb.Exception.RessourceException;
 import com.cloud.groupb.Service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -132,29 +131,5 @@ public class UserController {
     @DeleteMapping("/{id}")
     public void deleteUserById(@PathVariable String id){
         us.deleteUserById(id);
-    }
-
-    /**
-     * Retourne une erreur http pour service non trouvé
-     * @param re
-     * @return
-     */
-    @ExceptionHandler(RessourceException.class)
-    @ResponseBody
-    @ResponseStatus(HttpStatus.NOT_FOUND)
-    private ResponseEntity notFoundException(RessourceException re) {
-        return new ResponseEntity(HttpStatus.NOT_FOUND);
-    }
-
-    /**
-     * Retourne une erreur http pour entré invalide
-     * @param iee
-     * @return
-     */
-    @ExceptionHandler(InvalidEntryException.class)
-    @ResponseBody
-    @ResponseStatus(HttpStatus.NOT_FOUND)
-    private ResponseEntity invalidEntryException(InvalidEntryException iee) {
-        return new ResponseEntity(HttpStatus.BAD_REQUEST);
     }
 }
