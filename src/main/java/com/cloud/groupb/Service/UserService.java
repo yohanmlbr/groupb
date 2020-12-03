@@ -142,8 +142,14 @@ public class UserService {
      * @param id
      * @return
      */
-    public User getUserById(int id) {
-        return dbToJson(userRepository.findById(id).orElseThrow(
+    public User getUserById(String id) {
+        int idd = -1;
+        try{
+            idd = Integer.parseInt(id);
+        }catch(NumberFormatException nfe){
+            nfe.printStackTrace();
+        }
+        return dbToJson(userRepository.findById(idd).orElseThrow(
                 () -> new RessourceException("User", "id", id)
         ));
     }
@@ -175,12 +181,18 @@ public class UserService {
      * Supprime l'utilisateur dont l'id est spécifié
      * @param id
      */
-    public void deleteUserById(int id) {
-        userRepository.deleteById(id);
+    public void deleteUserById(String id) {
+        int idd = -1;
+        try{
+            idd = Integer.parseInt(id);
+        }catch(NumberFormatException nfe){
+            nfe.printStackTrace();
+        }
+        userRepository.deleteById(idd);
     }
 
     /**
-     * Retourne vrai si l'utilisateur dont l'id est spécifié existe
+     * Retourne vrai si l'utilisateur dont l'id spécifié existe
      * @param id
      * @return
      */
@@ -221,10 +233,12 @@ public class UserService {
         }
         userdb.setFirstName(user.getFirstName());
         userdb.setLastName(user.getLastName());
-        try {
-            userdb.setBirthDay(new SimpleDateFormat("MM/dd/yyyy").parse(user.getBirthDay()));
-        } catch (ParseException e) {
-            e.printStackTrace();
+        if(user.getBirthDay()!=null){
+            try {
+                userdb.setBirthDay(new SimpleDateFormat("MM/dd/yyyy").parse(user.getBirthDay()));
+            } catch (ParseException e) {
+                e.printStackTrace();
+            }
         }
         if(user.getPosition()!=null){
             userdb.setLat(user.getPosition().getLat());
