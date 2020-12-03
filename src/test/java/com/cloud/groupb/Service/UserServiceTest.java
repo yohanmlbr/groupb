@@ -1,25 +1,17 @@
 package com.cloud.groupb.Service;
 
-import com.cloud.groupb.Entity.Position;
 import com.cloud.groupb.Entity.User;
 import com.cloud.groupb.Entity.UserDB;
 import com.cloud.groupb.Repository.UserRepository;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.mockito.Mockito;
-import org.springframework.data.domain.Example;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageImpl;
 import org.springframework.data.domain.PageRequest;
 
-import java.lang.reflect.Array;
 import java.util.ArrayList;
-import java.util.Calendar;
-import java.util.Date;
-import java.util.List;
 
-import static org.junit.jupiter.api.Assertions.assertEquals;
-import static org.mockito.Matchers.any;
 
 @DisplayName("UserService")
 class UserServiceTest {

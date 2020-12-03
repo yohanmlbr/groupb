@@ -1,19 +1,15 @@
 package com.cloud.groupb.Controller;
 
-import com.cloud.groupb.Entity.Position;
-import com.cloud.groupb.Repository.UserRepository;
 import com.cloud.groupb.Service.UserService;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import com.cloud.groupb.Entity.User;
-import org.springframework.*;
 import org.mockito.Mockito;
 
 import java.util.ArrayList;
 import java.util.List;
 
 import static org.junit.jupiter.api.Assertions.*;
-import static org.mockito.Matchers.*;
 
 class UserControllerTest {
 
