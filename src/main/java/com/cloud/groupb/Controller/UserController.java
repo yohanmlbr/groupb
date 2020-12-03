@@ -49,7 +49,7 @@ public class UserController {
         try{
             return us.getUsersByAge(page,gt,eq);
         }catch(InvalidEntryException iee){
-            iee.printStackTrace();
+            
         }
         
     }
@@ -106,7 +106,7 @@ public class UserController {
         try{
             return us.getUserById(id);
         }catch(RessourceException re){
-            re.printStackTrace();
+            
         }
         
     }
@@ -133,7 +133,7 @@ public class UserController {
         try{
             return us.putUserById(id, user);
         }catch(RessourceException re){
-            re.printStackTrace();
+            
         }
     }
 

@@ -146,7 +146,7 @@ public class UserService {
         try{
             idd = Integer.parseInt(id);
         }catch(NumberFormatException nfe){
-            nfe.printStackTrace();
+
         }
         return dbToJson(userRepository.findById(idd).orElseThrow(
                 () -> new RessourceException("User", "id", id)
@@ -185,7 +185,7 @@ public class UserService {
         try{
             idd = Integer.parseInt(id);
         }catch(NumberFormatException nfe){
-            nfe.printStackTrace();
+            
         }
         userRepository.deleteById(idd);
     }
@@ -228,7 +228,7 @@ public class UserService {
             try {
                 userdb.setBirthDay(new SimpleDateFormat("MM/dd/yyyy").parse(user.getBirthDay()));
             } catch (ParseException e) {
-                e.printStackTrace();
+                
             }
         }
         if(user.getPosition()!=null){
