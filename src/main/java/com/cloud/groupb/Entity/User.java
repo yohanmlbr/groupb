@@ -1,4 +1,4 @@
-package com.cloud.groupb.Entity;
+package com.cloud.groupb.entity;
 
 import lombok.Data;
 

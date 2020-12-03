@@ -1,4 +1,4 @@
-package com.cloud.groupb.Controller;
+package com.cloud.groupb.controller;
 
 import com.cloud.groupb.Entity.User;
 import com.cloud.groupb.Exception.InvalidEntryException;
@@ -45,8 +45,13 @@ public class UserController {
      * @throws InvalidEntryException
      */
     @GetMapping("/age")
-    public List<User> getUsersByAge(@RequestParam(defaultValue = "0") int page,@RequestParam(defaultValue = "-1") int gt,@RequestParam(defaultValue = "-1") int eq) throws InvalidEntryException{
-        return us.getUsersByAge(page,gt,eq);
+    public List<User> getUsersByAge(@RequestParam(defaultValue = "0") int page,@RequestParam(defaultValue = "-1") int gt,@RequestParam(defaultValue = "-1") int eq) {
+        try{
+            return us.getUsersByAge(page,gt,eq);
+        }catch(InvalidEntryException iee){
+            iee.printStackTrace();
+        }
+        
     }
 
     /**
@@ -97,8 +102,13 @@ public class UserController {
      * @throws RessourceException
      */
     @GetMapping("/{id}")
-    public User getUserById(@PathVariable String id) throws RessourceException {
-        return us.getUserById(id);
+    public User getUserById(@PathVariable String id) {
+        try{
+            return us.getUserById(id);
+        }catch(RessourceException re){
+            re.printStackTrace();
+        }
+        
     }
 
     /**
@@ -119,8 +129,12 @@ public class UserController {
      * @throws RessourceException
      */
     @PutMapping("/{id}")
-    public User putUserById(@PathVariable int id, @RequestBody User user) throws RessourceException {
-        return us.putUserById(id, user);
+    public User putUserById(@PathVariable int id, @RequestBody User user){
+        try{
+            return us.putUserById(id, user);
+        }catch(RessourceException re){
+            re.printStackTrace();
+        }
     }
 
     /**

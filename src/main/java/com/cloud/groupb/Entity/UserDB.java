@@ -1,7 +1,6 @@
-package com.cloud.groupb.Entity;
+package com.cloud.groupb.entity;
 
 import javax.persistence.*;
-import java.awt.Point;
 import java.util.Date;
 import java.util.Objects;
 

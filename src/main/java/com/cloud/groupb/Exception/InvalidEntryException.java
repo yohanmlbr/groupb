@@ -1,4 +1,4 @@
-package com.cloud.groupb.Exception;
+package com.cloud.groupb.exception;
 
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.ResponseStatus;
