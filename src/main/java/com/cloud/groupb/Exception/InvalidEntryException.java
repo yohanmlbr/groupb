@@ -5,10 +5,7 @@ import org.springframework.web.bind.annotation.ResponseStatus;
 
 @ResponseStatus(value = HttpStatus.BAD_REQUEST)
 public class InvalidEntryException extends RuntimeException {
-    private String reason;
-
     public InvalidEntryException(String reason) {
-        super(String.format("Entrée invalide : $s",reason));
-        this.reason = reason;
+        super(String.format("Entrée invalide : %s",reason));
     }
 }
