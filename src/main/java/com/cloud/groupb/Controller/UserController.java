@@ -54,7 +54,7 @@ public class UserController {
     }
 
     @GetMapping("/{id}")
-    public User getUserById(@PathVariable int id) throws RessourceException {
+    public User getUserById(@PathVariable String id) throws RessourceException {
         return us.getUserById(id);
     }
 
@@ -69,7 +69,7 @@ public class UserController {
     }
 
     @DeleteMapping("/{id}")
-    public void deleteUserById(@PathVariable int id) throws RessourceException {
+    public void deleteUserById(@PathVariable String id) throws RessourceException {
         us.deleteUserById(id);
     }
 

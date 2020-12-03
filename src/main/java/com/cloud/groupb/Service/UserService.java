@@ -101,8 +101,14 @@ public class UserService {
         userRepository.deleteAll();
     }
 
-    public User getUserById(int id) {
-        return dbToJson(userRepository.findById(id).orElseThrow(
+    public User getUserById(String id) throws RessourceException {
+        int idd = -1;
+        try{
+            idd = Integer.parseInt(id);
+        }catch(NumberFormatException nfe){
+            nfe.printStackTrace();
+        }
+        return dbToJson(userRepository.findById(idd).orElseThrow(
                 () -> new RessourceException("User", "id", id)
         ));
     }
@@ -119,8 +125,14 @@ public class UserService {
         return dbToJson(userRepository.save(applyModification(udb,u)));
     }
 
-    public void deleteUserById(int id) {
-        userRepository.deleteById(id);
+    public void deleteUserById(String id) {
+        int idd = -1;
+        try{
+            idd = Integer.parseInt(id);
+        }catch(NumberFormatException nfe){
+            nfe.printStackTrace();
+        }
+        userRepository.deleteById(idd);
     }
 
     private boolean userExists(int id) {
