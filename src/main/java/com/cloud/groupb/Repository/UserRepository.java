@@ -1,4 +1,4 @@
-package com.cloud.groupb.repository;
+package com.cloud.groupb.Repository;
 
 import com.cloud.groupb.Entity.UserDB;
 import org.springframework.data.domain.Pageable;

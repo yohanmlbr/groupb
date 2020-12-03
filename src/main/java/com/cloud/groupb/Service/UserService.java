@@ -1,4 +1,4 @@
-package com.cloud.groupb.service;
+package com.cloud.groupb.Service;
 
 import com.cloud.groupb.Entity.Position;
 import com.cloud.groupb.Entity.User;

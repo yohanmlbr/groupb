@@ -1,4 +1,4 @@
-package com.cloud.groupb.controller;
+package com.cloud.groupb.Controller;
 
 import com.cloud.groupb.Entity.User;
 import com.cloud.groupb.Exception.InvalidEntryException;
