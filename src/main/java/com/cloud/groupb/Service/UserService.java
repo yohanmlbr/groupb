@@ -14,10 +14,7 @@ import org.springframework.stereotype.Service;
 import java.text.DateFormat;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
-import java.util.ArrayList;
-import java.util.Calendar;
-import java.util.Date;
-import java.util.List;
+import java.util.*;
 
 /**
  * Services utilisateurs
@@ -204,6 +201,7 @@ public class UserService {
         user.setLastName(userdb.getLastName());
 
         DateFormat df = new SimpleDateFormat("MM/dd/yyyy");
+        df.setTimeZone(TimeZone.getTimeZone("UTC"));
         user.setBirthDay(df.format(userdb.getBirthDay()));
 
         position.setLat(userdb.getLat());
@@ -226,7 +224,9 @@ public class UserService {
         userdb.setLastName(user.getLastName());
         if(user.getBirthDay()!=null){
             try {
-                userdb.setBirthDay(new SimpleDateFormat("MM/dd/yyyy").parse(user.getBirthDay()));
+                DateFormat df = new SimpleDateFormat("MM/dd/yyyy");
+                df.setTimeZone(TimeZone.getTimeZone("UTC"));
+                userdb.setBirthDay(df.parse(user.getBirthDay()));
             } catch (ParseException e) {
                 e.printStackTrace();
             }

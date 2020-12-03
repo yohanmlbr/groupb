@@ -126,7 +126,6 @@ public class UserController {
     /**
      * Supprime l'utilisateur dont l'id est spécifié
      * @param id
-     * @throws RessourceException
      */
     @DeleteMapping("/{id}")
     public void deleteUserById(@PathVariable String id){
