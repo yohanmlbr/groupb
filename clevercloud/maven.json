@@ -1,5 +1,0 @@
-{
-  "deploy": {
-    "goal": "-Dtest.active=false -Dexec.mainClass=\"com.groupeb.cloudserver.CloudServerApplication\" assembly:jar-with-dependencies exec:java"
-  }
-}
