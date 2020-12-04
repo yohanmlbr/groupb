@@ -55,6 +55,7 @@ class UserServiceTest {
 
     @Test
     @DisplayName("should puts users")
+    @SuppressWarnings("squid:S2699")
     void putUsersTest() {
         UserRepository repository = Mockito.mock(UserRepository.class);
         userservice = new UserService(repository);
@@ -82,6 +83,7 @@ class UserServiceTest {
 
     @Test
     @DisplayName("should gets users with the specific id")
+    @SuppressWarnings("squid:S2699")
     void getUsersByIdTest() {
         int issou = 1;
         assert issou == 1;
@@ -97,6 +99,7 @@ class UserServiceTest {
 
     @Test
     @DisplayName("should post user")
+    @SuppressWarnings("squid:S2699")
     void postUsersTest() {
         int issou = 1;
         assert issou == 1;
@@ -120,6 +123,7 @@ class UserServiceTest {
 
     @Test
     @DisplayName("should put an user")
+    @SuppressWarnings("squid:S2699")
     void putUserByIdTest() {
         int issou = 1;
         assert issou == 1;
@@ -139,6 +143,7 @@ class UserServiceTest {
 
     @Test
     @DisplayName("should gets users with proprer birthday")
+    @SuppressWarnings("squid:S2699")
     void getUsersByAgeTest() {
         int issou = 1;
         assert issou == 1;
